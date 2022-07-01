@@ -1,0 +1,189 @@
+// E F Codd - father of DBMS
+// Database System:
+    a)Database - collection of releated data (structured(Realational model), unstructured)
+    b)DBMS 
+
+//  RDBMS - Realational Database management System
+
+// File System vs DBMS:
+    a)We can search data faslty and remotely using DBMS(searching).
+    b)Do not have to know where is the location of data(attributes).
+    c)Protocol exist for concurrancy in DBMS(concurrancy).
+    d)DBMS provides role based security(security)
+    e)DBMS stop redundancy(redundancy)
+
+// 2-Tier and 3-Tier:
+    2-Tier: Client server architecture:
+        a)advantage in maintanance
+        b)disadvantage in scalebality.
+        c)disadvantage in security 
+    3- Tier: Client, business and server architecture:
+        a)advantage in security
+        b)advantage in scalebality
+        c)disadvantage in maintanance
+
+// Schema:
+    (logical representation of schema and collection of table)
+
+// Three schema architecture: }-data abstraction/independence
+    :View level(Normal schema)
+    :logical level(conceptual schema)(E-R model Blue print)
+    :Physical level(physical/Internal schema)
+
+// Logical data independence:
+    View lavel doesn't change while changing conceptual level :creating virtual table (views) for different users for making data independent 
+// Physical data independence:
+    conceptual level doesn't change while changing physical level
+
+// Key:
+    key is a attribute by which we can uniquely identify any two tuples(coloumn) in the table
+
+//  collection of all attribute in the table called //candidate key(must be unique) and we choose 1 key as primary key and other known as alternative key
+
+// primary key(Unique + not NULL): We always give primary key value to users instead of taking its entry.
+    :One table has only one primary key
+
+// Foreign key: It is a attribute or set of attributes that reference to primary key of the same table or another table
+    : To maitain referential integrity
+    : The table contains Foreign key called referencing table 
+    : The table contains primary key called referenced table
+
+    eg:
+        Create table Course
+        (
+            Course_id varchar(10),
+            Course_name  varchar(20),
+            Roll_no references Student(Roll_no)
+        );
+        or 
+        Alter table Course 
+        ADD Constraint fk 
+        foreign key(Roll_no) 
+        references Student(Roll_no);
+    // one table can contain more than one foreign key
+
+// Referential integrity(same value for Database(all table)):
+    Changing Referenced/ base table:(while changing referenced table is intigrity voilates)
+        Insertion: No voilation
+        Deletion : may do voilation : method to preventing:
+                                    while making shema add (on delete Cascade)- this deletes the row from referencing table as well
+                                    (on delete set NULL)- this set null as entry of foreign key bu it cannot be primary key
+                                    (on delete no action)- error while deleting from base table
+        Updation: same as Deletion
+    Changing Referencing table: 
+        Insertion : may cause voilation
+        Deletion: Not cause voilation
+        Updation: may cause voilation
+        
+// Super Key:
+    A super key is a combination of all possible attribute which can uniquely identify two touples in a table.
+    (super set of any candidate key is called super key)
+
+// Entity - Relationship model(ER model):
+    :Relation b/w different Entity
+    :Entity is a object which has some physical existance
+    :Attribute are the charactersticks of a Entity
+
+// Types of attribute(eclipse default representation):
+    :Single vs multivalued(double circle) attributes:(can have single value and multivalued respectively)
+    :Simple vs Composite:(cannot divide and can divide further)
+    :Stored vs Derived(dotted eclipse):(eg DOB and age)
+    :Key(underline) vs Non-key:(unique and not unique)
+    :Required vs Optional
+    :Complex(Composite+multivalued)
+
+// ER model to Realational model:
+// Degree of Relationship (Cardinality):
+    :One to One:Relationship table contains primary key of both table as foreign key and entry is one to one only
+               :primary key any one in foreign keys 
+               :finally we merge the two tables which have same primary key and final no of table should be 2.
+    // Relationship table can have its own attributes called descriptive attributes.
+    :One to Many:Relationship table contains primary key of both table as foreign key.
+                :means the primary key of first table can be repeat
+               :primary key is second foreign keys 
+               :finally we merge the two tables which have same primary key(Relationship and 2nd) and final no of table should be 2.
+    :Many to Many(M - N):Relationship table contains primary key of both table as foreign key.
+                        :means the primary key of both table can be repeat.
+                        :primary key will be Composite key of both foreign key.
+                        :we cannot merge any two table in this case.
+
+// Normalization:
+    It is a technique to remove or reduce redundancy from a table.
+    Row level duplicessy: It is already removed by primary key concept.
+    Column level duplicessy: It cause problem:
+                            :Intertion Anomaly(Anomaly means problem which occurs on special case)
+                            :Deletion Anomaly
+                            :Updation Anomaly
+
+// Functional dependency:
+    : Trivial: If Y is a subset of X then X->Y and X intersection Y !=phi 
+    : Non Trivial: X->Y and X intersection Y ==phi
+    // properties of Functional dependency:
+        :Y is a subset of X then X->Y(reflexivity)
+        :if X->Y then XZ->YZ(Augumentation)
+        :if X->Y and Y->Z then X->Z(transitive)
+        :if X->Y and X->Z then X->YZ(union)
+        :if X->YZ then X->Y and X->Z(Decomposition)
+        :if X->Y and WY->Z then WX->Z(Pseudo transitivity)
+        :if X->Y and W->Z then WX->YZ(Composition)
+
+// Closure method (Find all candidate key in a table):
+            :A candidate key is a key which can determine all the attribute in a table
+            eg)R(ABCD) is a Realational table
+                Functional dependency {A->B, B->C, C->D}
+                Closure of A = ABCD(by transitive properties) (is a candidate key)
+                // here AB can determine all other attribute but it is a super key candidate key should be minimal
+                // Prime attribute are those attribute which are helping in the formation of any candidate key and vise-versa for non Prime attribute
+                // If any attribute not present at the right side of any Functional dependencies then for making candidate key it must be present.
+    
+// Normal Form:
+    :First Normal Form:Table should not contain any multivalued attribute.
+                    // Solution:
+                        We will break Composite value into two row but table can have different primary key after.
+                        We can break Composite value into two coloumn
+                        Break the table into two tables
+    :second Normal Form:Table must be present in first Normal form and all the non prime attribute should be fully Functional dependent on candidate key
+                        :or non prime attribute must not be determine by a proper subset of candidate key(no partial dependencies)
+    :Third Normal Form:Table must be present in second Normal form and table should not contain any transitive dependencies
+                        :or non prime attribute must not be determine by any other non prime attribute(no transitive dependencies)
+    :BCNF(Boyce Codd Normal) Form:Table must be present in Third Normal form and all attribute should be determine by the candidate or super key
+
+// Third Normal form always ensures 'dependencies preserving Decomposition' but not BCNF
+// Both Third and BCNF ensures lossless Decomposition
+
+// lossless and lossy Decomposition:
+    when we divide our Relation into two Relation and then perform natural join on both tables
+    then if we choose common attribute of first table primary key or second primary key or both primary key
+    then the lossless Decomposition occurs other wise lossy Decomposition occurs due to inconsistency/duplicessy in data(spuious touple)
+    // Divide a table into two tables by taking care of common attribute must be a candidate key for lossless Decomposition
+    // R1 intersection R2 != phi
+    // R1 union R2 == R
+
+    :Fourth Normal form:Table must be present in BCNF + has no multivalued dependencies
+    :Fifth Normal form:Fourth Normal form + lossless Decomposition
+
+// Minimal Cover:How to find? Steps:
+    :Decompose all dependencies which can decomposible
+    :remove all redundant Relation:  one by one removing Relation and check the dependency should not lost.
+    :check if we can Decompose the left side of a dependencies (eg if(XY->Z then whether we can write X->Z or Y->Z))
+
+// Equivalance of Functional dependency:
+    if x covers y then y is a subset of x and vise versa and if both holds then x is equivalant of y.
+    if x covers y then closure of (LHS of all dependencies in Y) in X must contain RHS of respective dependencies in Y.
+
+// dependency preserving Decomposition:
+    First find all possible(must have in origional Relation)non trivial dependencies in all decompose Relation then if all origional dependencies of origional Relation
+    are present in union of all dependencies of decompose Relation then we call dependencies are preserve.
+
+//Joins and Types of Joins:
+    Joins are cross product of two Relation + some select statements(condition)
+    :Natural join: when we want a answer which leads to equal a common attribute in two table then we use natural join
+    syntax: Select * from table1,table2 where table1.common_attribute=table2.common_attribute
+            : simply we write select * from table1 Natural Join table2 (common_attribute name must equal in this case)
+
+    :Self Join: syntax: Select * from table as t1,table as t2 where condition;
+
+    :Equi Join: We use equi join when we have to equal some other attribute unlike common attribute in natural join
+
+    :Left Outer Join: It gives the matching rows and the rows which are in left table but not in the right table
+        syntax: Select * from table1 left Outer join on (condition);
