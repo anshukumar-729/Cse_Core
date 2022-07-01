@@ -186,4 +186,4 @@
     :Equi Join: We use equi join when we have to equal some other attribute unlike common attribute in natural join
 
     :Left Outer Join: It gives the matching rows and the rows which are in left table but not in the right table
-        syntax: Select * from table1 left Outer join on (condition);
+        syntax: Select * from table1 left Outer join table2 on (condition);
