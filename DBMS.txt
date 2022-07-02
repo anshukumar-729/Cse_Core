@@ -187,3 +187,50 @@
 
     :Left Outer Join: It gives the matching rows and the rows which are in left table but not in the right table
         syntax: Select * from table1 left Outer join table2 on (condition);
+    
+    :Right Outer Join:Same as left Outer join
+
+// Relational Algebra: Procedure Query Language/ Formal Query Language
+    // Operators:
+        Basic Operator:
+        :Projection(π)
+        :Selection(σ)
+        :Cross Product(×)
+        :Union(U)
+        :Rename(ρ)
+        :Set Diffrence(-)
+        Derived Operator:
+        :Join(⨝)
+        :intersection(∩)
+        :Division(/)
+    // Projection Operator:π_{attribute1,attribute2}(Table);- It only show distinct row
+    // Selection Operator:π_{attribute1}(σ_{condition}(Table));
+    // Cross product:(Relation1 × Relation2);
+    // set Diffrence:(Relation1 - Relation2); :No of Column and domain of each coloumn must be same
+    // Union:(Relation1 U Relation2); :No of Column and domain of each coloumn must be same
+    // Division:A(X,Y)/B(Y): It result X values for that there should be touple <X,Y> for every Y value of Relation B
+                            : We uses the division Operator in (for every/ for all) Types of question
+                eg) find X in A where for every Y in B there must be a Y value for every X;
+                    or find X in A where for each Y for X in A contains all Y of B;
+                syntax:(π_{X}(A))-(π_{X}(π_{X}(A)*π_{Y}(B)})-(π_{X,Y}(A)));
+
+// Relational Claculus:Touple Realational Claculus and domain Relational Claculus
+                        Touple Relational Claculus is non Procedure(we only have to tell what to do not bother about how to do) unlike Relational algebra
+                        syntax: {t| p(t)};
+                        Touple Relational Claculus and algebra have same expressive power but we have take care of unsafe expression in touple relational Claculus.
+
+// SQL(structured query Language)(1970):
+    : SQL is domain specific language
+    : SQL is declarative/non Procedure language(we have to only mention what to do);
+
+// SQL commands:
+    : DDL(data definition language) commands: deals with schema(structure of the table)
+        Create, Alter, Drop, Truncate, Rename
+    : DML(data manipulation language) commands: data filing related commands.
+        Select, Insert, Update, Delete
+    : DCL( data control language) commands: Related to data prevealge
+        Grant, Revoke.
+    : TCL(transaction control language) commands:related to transaction of data
+        Commit, Roll back, Save point
+    // Constraints:
+        primary key, Foreign key, Check, Unique, default, Not NULL.
