@@ -233,4 +233,91 @@
     : TCL(transaction control language) commands:related to transaction of data
         Commit, Roll back, Save point
     // Constraints:
-        primary key, Foreign key, Check, Unique, default, Not NULL.
+        primary key, Foreign key, Check(condition while inserting data), Unique, default, Not NULL.
+
+// Diffrence b/w Alter and Update commands:
+    :Alter is a DDL command but Update is a DML command.
+    :Alter command is used to changing the structure(schema) of table while Update command is used to changing any data of the table
+
+// Diffrence b/w Delete, Drop and Truncate commands:
+    :Delete is a DML command which is used to delete any row in a table.
+    :Drop is a DDL command which is used to drop whole table structure(deletes table) along with table data.
+    :Truncate is a DDL command which is used to delete whole row/data from a table but table structure still exist.
+    :Delete is slower than Truncate but it creates log and roll back is possible in this case.
+
+// Group by Clause:
+    Select same_att, count(*)/count(any_att) from table group by same_att
+    : We use having instead of where in group by Clause.
+    Select same_att from table group by same_att having condition;
+
+// Exist and not exist: Use in corelated nested query:(inner and Outer query is corelated): inner query run for all row of Outer query and return true/false.
+
+// corelated nested query(synchronized query):
+    :It is a subquery which uses value from Outer query
+    :Top Down approach (inner query run for all row of Outer query and return true/false(in case of exist).)
+    eg) select * from table1 where exist (select * from table2 where table1.attribute=table2.attribute);
+
+// Aggregate function in SQL:
+    Max, Min, Count, Avg, Sum eg)Select Max(attribute) from table
+
+eg) Difference b/w nested query, corelated subquery and joins using example:
+    //nested query:  select * from table1 where attribute in (select attribute from table2);
+    //corelated subquery: select * from table1 where exist (select * from table2.attribute=table2.attribute);
+    //joins: select * from table1,table2 where table1.attribute=table2.attribute;
+
+// Find Nth highest thing for a attribute in a table:
+    Select * from table as t1 where n-1=(select count (distinct attribute) from table as t1 where t1.attribute<t2.attribute); 
+
+// Regex in SQL : % works as * and _ can be any one character
+
+// PL-SQL: Procedural SQL: It is like a program as c,c++;
+    It consists three parts : Declaration(starts with declare), Excutable code(code is written b/w begin and end), Exception handling.
+
+// Transaction: It is set of Operation used to perform a logical unit of work
+                : A transaction generally represents change in Database.
+
+// ACID properties in transaction:
+    : Atomicity : Either all or none: A failed transaction cannot be resumed, it always restart(Roll back).
+    : Consistency: Before the transaction starts and after the transaction completed the sum of total money must be same.
+    : Isolation: In Isolation we try to convert a parallel shedule to serial shedule.
+    : Durability: The data should be durable untill it update somehow.
+
+// Transaction States:
+    Begin -> Active -> Partially commited(only commit is left) -> Commited -> terminated
+    Begin -> Active -> Partially commited(only commit is left) -> Failed -> Abort -> terminated
+    Begin -> Active -> Failed -> Abort -> terminated
+
+// Shedule: It is chronological execution sequence of multiple transaction.
+    :Serial and Parallel shedule
+    // Serial Shedule: :Transaction are done one by one in a order.
+                       :Throughput(No of transaction/ time) decreases.
+    // Parallel shedule: opposite of serial shedule
+    // Types of problem in concurrancy(parallel shedule):
+        :Dirty read/ Incommited read/ Read after write
+        :Incorrect Summary: Another transaction perform its Aggregate function in the middle of one transaction.
+        :Loss update(write-write problem)
+        :Unrepeatable read
+        :Phantom read
+
+// Write-Read Conflict/ Dirty read problem
+// Read-Write Conflict/ Unrepeatable read
+
+// Irrecoverable shedule:(If a transaction fails then its roll back and undo all Operation due to which all the other transaction occurs in the
+    middle of that transaction lossed and cannot get recover).
+// Cascading shedule:(write-read) Force abort some shedule due to aborting of a shedule.(opposite- cascadeless shedule(we cannot read after any write))
+
+// Serializability:(We check if there exist a serial shedule equivalant to given shedule)
+    :Methods for checking Serializability are:
+        :Conflict serializable
+        :view serializable
+
+// Conflict equivalant:
+    :Conflict Pairs are:R(A)->W(A), W(A)->R(A), W(A)->W(A). else are non-conflict pairs
+    :If we swap some non conflict pairs from a shedule and reach to Another(serial) shedule then the shedules are conflict equivalant.
+
+// Conflict serializable:
+    :We made a precedence graph - check conflict pairs in other transaction and draw edges in graph:
+    :If we found no loop/cycle in the precedence graph then the transaction are conflict serializable -> serializable -> consistant
+    :If the precedence graph consists no cycle then topological order(in degree 0) if transaction can be a serializable shedules.
+    :If we found any cycle in the precedence graph then we cannot say anything
+
