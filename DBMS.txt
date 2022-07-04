@@ -321,3 +321,41 @@ eg) Difference b/w nested query, corelated subquery and joins using example:
     :If the precedence graph consists no cycle then topological order(in degree 0) if transaction can be a serializable shedules.
     :If we found any cycle in the precedence graph then we cannot say anything
 
+// Shared Exclusive Locking Protocol:
+    Shared Lock(S):If transaction locked data item in Shared mode then allowed to read only.
+    Exclusive Lock(X):If transaction locked data item in Exclusive mode then allowed to read and right both.
+    // According to compatibility table:If Shared lock is Grant then if another Shared lock is requested then request will accept
+     o/w reject in all other cases due to conflicts.
+    // problems in S/X Locking:
+        :May not sufficient to produce only serializable shedule.
+        :May not free from recoverability
+        :May not free from Roll back.
+        :May not free from deadlocks.
+        :May not free from starvation
+    
+// 2-Phase Locking (2PL):(Always ensures the Serializability)
+    Growing phase:locks are aquired and no locks are released.
+    Shrinking phase:locks are released and no locks are aquired.
+    // disadvantages:May not free from Irrecoverability.
+                    :Not free from deadlocks.
+                    :Not free from starvation.
+                    :Not free from cascading rollback.
+
+// Strict 2PL: It should satisfy the basic 2PL and all Exclusive locks should hold untill commit/Abort.
+             : cascadeless and Strict recoverable.
+// Rigorous 2PL: It should satisfy the basic 2PL and all shared and Exclusive locks should hold untill commit/Abort.
+               : cascadeless and Strict recoverable.
+// Conservative 2PL:It gives all resources on a particular transaction first.
+                   :All disadvantages removed.(practically not possible)
+
+// Timestamp ordering Protocol:
+    : Unique value assign to every transaction.
+    : Tells the order(when they enter into System)
+    : Read_TS(RTS) Latest transaction no which performed read successfully.
+    : Write_TS(WTS) Latest transaction no which performed write successfully.
+    // We assume that if a transaction first came then it will completes first
+    // If a older Timestamp transaction wants to perform read or write after any write of elder transaction then not possible(roll back).
+
+// Indexing: I/O cost is reduced by Indexing.(It reduced no of blocks to search)
+    :Dense Indexing: Unordered data(we have to enter index for all entry of all blocks)
+    :Sparse Indexing: Ordered data(we have to enter only anchor entry of each blocks)
