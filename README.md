@@ -1,2 +1,2 @@
 # Cse_Core
-This repo consist core subject of cse notes
+This repo contain notes of core subject of cse.
