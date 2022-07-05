@@ -321,6 +321,11 @@ eg) Difference b/w nested query, corelated subquery and joins using example:
     :If the precedence graph consists no cycle then topological order(in degree 0) if transaction can be a serializable shedules.
     :If we found any cycle in the precedence graph then we cannot say anything
 
+// View Serializability: if a parallel shedule is view equivalant to a serial shedule then:
+                        : Read Initial value of all data item must be same
+                        : Write final value of all data item must be same
+                        : Both shedule must contain same W->R conflict
+
 // Shared Exclusive Locking Protocol:
     Shared Lock(S):If transaction locked data item in Shared mode then allowed to read only.
     Exclusive Lock(X):If transaction locked data item in Exclusive mode then allowed to read and right both.
@@ -356,6 +361,92 @@ eg) Difference b/w nested query, corelated subquery and joins using example:
     // We assume that if a transaction first came then it will completes first
     // If a older Timestamp transaction wants to perform read or write after any write of elder transaction then not possible(roll back).
 
-// Indexing: I/O cost is reduced by Indexing.(It reduced no of blocks to search)
+// Indexing: I/O cost is reduced by Indexing.(It reduced no of blocks to search) and consists a key value and a pointer for each entry.
     :Dense Indexing: Unordered data(we have to enter index for all entry of all blocks)
     :Sparse Indexing: Ordered data(we have to enter only anchor entry of each blocks)
+
+// Types of indexes:
+    :Primary
+    :Clustured
+    :Secondary
+    // If data is sorted and data has key values(uniqueness) then we use primary index.
+    // If data is sorted and data has no key values(non-unique) then we use Clustured index.
+    // If data is Unordered and data has key values(uniqueness) then we use Secondary index.
+    // If data is Unordered and data has no key values(non-unique) then also we use Secondary index.
+
+// Primary Index: Its generally Sparse
+                : No of entry in index table = no of blocks in hard disk
+                : Average search time = log2(no of pointers in index table)+1
+// Clustured index: Its also Sparse.
+                  : We have to point for all unique key in table
+                  : We have to use blocks hanckors which point same key to the below block(if same keys are not fit into one block)
+                  : Average search time = log2(no of pointers in index table)+1+1..(for blocks hanckors) 
+// Secondary index(key): Its will Dense
+                       : No of entry in index table(in sorted order) = no of entry in hard disk
+                       : Average search time = log2(no of pointers in index table)+1
+// Secondary index(Non key): We will uses a intermediate layer which have multiple block for all unique key in hard disk and each block work as index table(dense).
+                             and for each blocks we have main index table entry(sparse).
+                            : We generally call it dense.
+
+// B-Trees:(Dynamic Multilevel index) Follow binary search tree properties.
+            : Blocks/Tree pointers: which points to the child of the node.
+            : Key+Record/Data pointers: which points to data in the hard disk.
+            : Each block can consists many block pointers and record pointers.
+            // order of a b-tree is maximum no of childrens(p say) of a block/node.
+            // minimum no of childrens of root node is 2 and intermediate node is ceil(p/2);
+            // No of block pointers(max) = p;
+            // No of record pointers(max) = p-1;
+            // No of record pointers(min) = ceil(p)-1;
+
+// Intertion in B-Tree: Use BST properties for insertion
+
+// Difference b/w B-tree and B+-Tree:
+    :B-Tree: Data is Stored in the leaf as well as internal nodes(all nodes contains BP,Key,RP)
+           : searching is slower deletion is complex.
+           : No redundant search key present.
+           : Leaf node not linked together.
+    :B+-Tree: Data is stored only in the leaf nodes.(internal nodes contains BP,Key and leafs contains RP as well but not BP except 1 BP for next leaf)
+            : Searching is faster and deletion is easy.
+            : redundant key may present.
+            : Leafs are linked together like linked list.
+
+// Log based recovery:
+// Immediate Database Modification(Undo/Redo strategy): if a transaction starts as well as commit and if it will fails then redo o/w undo
+                                                      : We store old value with new value in log file
+// Deffered Database Modification(No Undo/redo strategy): if a transaction starts as well as commit and if it will fails then redo o/w nothing will done.
+                                                        : We store only new value in log file
+                                                    
+// View in Database:    
+    : virtual table(not physical existance)
+    : view is the result set of a stored query
+    : Read-only(We cannot modify view table) vs updatable (we can modify data in view table also change will saved in base table)views
+    : Materialized view: It is a snapshot of a Database or part of a Database which aquire space.
+    syntax: Create view v1 as Select * from table 
+    // DDL commands are not allowed
+    // advantages of view:
+        :To restrict the data access.
+        :To make complex query easy.
+        :To provide data independence
+        :To present different views of the same data
+
+// NULL in Aggregate function:
+    :All the function except count(*) ignores null value
+    :Count of null value is defined as 0 and other functions returns null.
+
+// RAID: redundant array of independent/inexpensive disk.
+        : RAID 0: Data striping (Fast performance)
+        : RAID 1: Mirroring (Security/Avaibility)
+        : RAID 1+0: striping+Mirroring (security + performance)
+        : RAID 3: We store data into peices in different disks and one disk(parity disk) contains parity of all block parallel to it.
+        : RAID 5: RAID 5 distributes the parity disk in all disks
+        : RAID 6: we calculate two parities for all parallel bits
+    
+// Various object in Database:
+    :Table: Basic unit od=f storage composed of rows and coloumn.
+    :View: Logical represent subset of data from one or more table
+    :Sequence: Generate numeric values(automatically)
+    :Index: Improve of the data retrieval queries.
+    :Synonyms: Gives alternative names to the objects.
+
+
+
