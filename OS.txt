@@ -1,0 +1,74 @@
+// Operating System and its function:
+    Operating system provides an interface b/w hardware and users/software
+   // Functionalities:
+        : Resource management(hardware)
+        : Process management(Cpu)
+        : Storage management(HardDisk)
+        : Memory management(RAM)
+
+// Idle: when cpu has no task to execute
+// Multiprogrammed: (We try to put more no of task in RAM) (try to reduce idelness)
+                    : Non preemptive(Switch occurs b/w to process if only running process allows)
+// Multitasking: (We try to run more no of process)(time sharing) (try to reduce response time)
+                : preemptive(Switch occurs b/w two process continueously for fixed time/ or due to priority)
+
+// Process states: New/Create -> Ready -> Running -> Terminated
+                                   Running -> Wait/Block -> Ready
+                                   Running -> Ready
+                                   Ready <-> Suspend ready(Secondary memory)
+                                   Wait <-> Suspend Wait (Secondary memory)
+
+// Long term schedular: It puts more no of processess in ready state from new state(Multiprogramming)
+// Short term schedular: It puts processess from ready state to running state.
+// Medium short schedular: If RAM is full due to ready queue or waiting queue then the processess has to put in Secondary memory called suspend state by Medium term schedular.
+
+// chmod command: three categories: user(read(4),write(2),execute(1))+group(read,write,execute)+other(read,write,execute)
+// lseak command: To move read write head 
+                eg) lseak(file_descriptor,#,SEEK_CUR) // change head # number ahead from current position
+                    lseak(file_descriptor,#,SEEK_SET) // set head position to # position.
+
+// System Calls:
+    By the help of system call we can use kernal mode Functionalities or we can switch from user to kernal mode.
+// Fork(): 
+    : It creates exactly clone of the parent process which has own process id.
+    : return value : 0 for child and +ve for parent
+    : no of child = pow(2,no of fork())-1.
+
+// User mode vs Kernal mode:
+    : When a process is running in user mode and if it call a system call then a trap generates and process shift from user mode to
+      kernal mode (mode bit change from 1 to 0) then system calls get executed and process return from system call (mode 0 to 1) trap release.
+
+// process vs threads: 
+    : System calls involves in process but not in threads.
+    : OS treats different processess differently but all user level threads treated as single task for OS.
+    : different process have different copies of data, files, code but threads share same copy of code and data(but have different stacks and registers).
+    : Context switching in slower in processess but faster in threads.
+    : Blocking a process will not blocks another but Blocking a thread blocks entire process.
+    : processess are independent but threads are interdependent.
+
+// User level vs kernal level thread:
+    : User level thread are managed by user level library but kernal level threads managed by OS.
+    : user level threads are typicallu fast but kernal level threads are slow.
+    : Context switching(process) > Context switching(kernal level threads) > Context switching(user level threads).
+    : If one user level thread perform blocking operation then entire process get blocked but if one kernal level thread blocke, it not affect others.
+
+// Scheduling algorithms:
+    : It is a way to put processess to cpu from ready queue.
+    : Pre- Emptive and Non Pre-Emptive
+
+// Arrival time: The time at which a process enter the Ready queue.
+// Burst time: Time required by a process to execute on cpu.
+// Completion time: The time at which a process completes its execution.
+// Turn around time: Completion time - Arrival time.
+// Waiting time: Turn around time - Burst time.
+// Response time: Time at which a process got cpu for first time - Arrival time.
+
+// FCFS(First come first serve) Scheduling algorithm: Criteria- Arrival time and mode - non preemptive 
+// SJF(Sortest Job First) Scheduling algorithm: Criteria- Burst time and mode - non preemptive 
+// SRTF(Sortest Remaining time First)(SJF+preemption) Scheduling algorithm: Criteria- Remaining time and mode - preemptive 
+// RR(Round Robin) Scheduling algorithm: Criteria- Time quantum and mode - preemptive : It contain one ready queue for sequence of processess.
+                                                                                        After each time quantum put the running process in ready queue
+                                                                                        and select a process present at front of ready queue(Context switching).
+
+    
+
