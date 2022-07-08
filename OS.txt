@@ -18,9 +18,9 @@
                                    Ready <-> Suspend ready(Secondary memory)
                                    Wait <-> Suspend Wait (Secondary memory)
 
-// Long term schedular: It puts more no of processess in ready state from new state(Multiprogramming)
-// Short term schedular: It puts processess from ready state to running state.
-// Medium short schedular: If RAM is full due to ready queue or waiting queue then the processess has to put in Secondary memory called suspend state by Medium term schedular.
+// Long term schedular: It puts more no of processes in ready state from new state(Multiprogramming)
+// Short term schedular: It puts processes from ready state to running state.
+// Medium short schedular: If RAM is full due to ready queue or waiting queue then the processes has to put in Secondary memory called suspend state by Medium term schedular.
 
 // chmod command: three categories: user(read(4),write(2),execute(1))+group(read,write,execute)+other(read,write,execute)
 // lseak command: To move read write head 
@@ -40,11 +40,11 @@
 
 // process vs threads: 
     : System calls involves in process but not in threads.
-    : OS treats different processess differently but all user level threads treated as single task for OS.
+    : OS treats different processes differently but all user level threads treated as single task for OS.
     : different process have different copies of data, files, code but threads share same copy of code and data(but have different stacks and registers).
-    : Context switching in slower in processess but faster in threads.
+    : Context switching in slower in processes but faster in threads.
     : Blocking a process will not blocks another but Blocking a thread blocks entire process.
-    : processess are independent but threads are interdependent.
+    : processes are independent but threads are interdependent.
 
 // User level vs kernal level thread:
     : User level thread are managed by user level library but kernal level threads managed by OS.
@@ -53,7 +53,7 @@
     : If one user level thread perform blocking operation then entire process get blocked but if one kernal level thread blocke, it not affect others.
 
 // Scheduling algorithms:
-    : It is a way to put processess to cpu from ready queue.
+    : It is a way to put processes to cpu from ready queue.
     : Pre- Emptive and Non Pre-Emptive
 
 // Arrival time: The time at which a process enter the Ready queue.
@@ -66,9 +66,161 @@
 // FCFS(First come first serve) Scheduling algorithm: Criteria- Arrival time and mode - non preemptive 
 // SJF(Sortest Job First) Scheduling algorithm: Criteria- Burst time and mode - non preemptive 
 // SRTF(Sortest Remaining time First)(SJF+preemption) Scheduling algorithm: Criteria- Remaining time and mode - preemptive 
-// RR(Round Robin) Scheduling algorithm: Criteria- Time quantum and mode - preemptive : It contain one ready queue for sequence of processess.
+// RR(Round Robin) Scheduling algorithm: Criteria- Time quantum and mode - preemptive : It contain one ready queue for sequence of processes.
                                                                                         After each time quantum put the running process in ready queue
                                                                                         and select a process present at front of ready queue(Context switching).
+                                                                                    
+// Multilevel queue Scheduling: We categorised different processes according to their priority and make different ready queue for that processes.
+                                : All ready queue can have different Scheduling algorithms.
+                                : problem - starvation
 
-    
+// Multilevel Feedback queue:
+    :This method is used for lower priority process in Multilevel queue Scheduling.
+    :First processes comes in their respective ready queue and after fix amount of time of their execution in that queue,
+    they shift to next high priority queue.
 
+// Process Syncronization:
+    // There are two types of process:
+        : Co-operative: They share variable, code, memory, resources, etc.(Execution of one process affect the other)
+        : Indepedent 
+    // If we not syncronize the co-operative processes then race condition(some processes race for their execution without any Syncronization) can occurs .
+
+// Critical Section: It is part of the program where shared recources are accessed by various processes.
+                    : We add entry and exit section code/rules for Critical section to prevent the race condition.
+
+// We have to follow 4 rules/ condition fo Syncronization mechanism for acheiving Syncronization:
+    Primary:
+    : Mutual Exclution(Only one process can enter into Critical section at one time)
+    : Progress(No process will prevent the use of critical section by another process when itself process is not using critical section)
+    Secondary:
+    : Bounded wait(One process cannot use critical section infinite no of times result to starvation of another processes)
+    : No assumtion related to hardware/speed(portable).
+
+// Lock: A process aquire lock when its uses critical section and release when the work is complete 
+    : value 1 for lock is aquired/full and 0 for vacant
+    // Execute in user mode.
+    // Multiprocess solution.
+    // No Mutual Exclution guarantee.
+    eg) while(lock==1);
+        lock=1;
+        // critical section
+        lock=0;
+
+// Test and Set: It work on same method as lock but it made first two line of lock atomic 
+                It test ans set the lock varibale in one line my a method.
+                eg) while(test_and_set(& lock));
+                    // critical section
+                    lock=flase;
+
+                    test_and_set(bool *target){
+                        bool r=*target;
+                        target=true;
+                        return r;
+                    }
+                : Mutual Exclution acheived.
+                : Progress acheived.
+
+// Turn variable: 2 process solution for critical section Syncronization.
+                : Run in user mode
+                eg)  for process 1            for process 2
+                    while(turn != 0);       while(turn != 1);
+                    // critical section     // critical section
+                    turn = 1;               turn = 0;
+                : Mutual Exclution acheived.
+                : Progress not acheived.
+                : Bounded wait acheived.
+            
+// Semaphores: Semaphores is a integer variable which is used in Mutual exclusive manner by various concurrent co-operative processes in order to achieve Syncronization.
+            : We use to types of integer range: 
+                :Counting(-inf to +inf)
+                :Binary(0,1)
+            : We use P() and V(), Down and Up, Wait and Signal where P(), Down and Wait are entry codes.
+        eg) Down (Semaphore S){
+                S.value=S.value-1;
+                if(S.value<0){
+                    Put process(PCB) in suspended list, 
+                    sleep();
+                }
+                else{
+                    retrun;
+                }
+            }
+            Up(Semaphore S){
+                S.value=S.value+1;
+                if(S.value<=0){
+                    Select a process from suspended list,
+                    WakeUp();
+                }
+            }
+
+// Solution of producer consumer problem using Semaphore:
+    Empty=size;
+    Full=0;
+    binary Semaphore S=1;
+    Produce(item p){
+        down(Empty);
+        down(S);
+        Buffer[in]=p;
+        in+=1;
+        in%=size;
+        up(S);
+        up(Full);
+    }
+    Consume{
+        down(Full);
+        down(S);
+        item p=Buffer[out];
+        out+=1;
+        out%=size;
+        up(S);
+        up(Empty);
+    }
+
+// Solution of reader-writer problem:
+    int rc=0;
+    Semaphore mutex=1,db=1;
+    void reader(){
+        while(true){
+            down(mutex);
+            rc+=1;
+            if(rc==1) down(db);
+            up(mutex);
+
+            // Database access
+
+            down(mutex);
+            rc-=1;
+            if(rc==0) then up(db);
+            up(mutex);
+            process data;
+        }
+    }
+    void writer(){
+        while(true){
+            down(db);
+            // Database access
+            up(db);
+        }
+    }
+
+// Dining philosophers problem:
+    void(){
+        while(true){
+            thinking();
+            down(fork_(S[i]));
+            down(fork_(S[i+1]));
+            Eat();
+            up(fork_(S[i]));
+            up(fork_(S[i+1]));
+        }
+    } // if all the philosophers takes the ith fork and wait for i+1th fork then the case will of deadlock;
+    // we can remove deadlock by simply change the down condition for any philosopher to down i+1th fork first then ith fork
+
+// Deadlock:
+    If two or more process are waiting on happening of some event which never happens, then we say these processes are involved in deadlock,
+    then that state is called deadlock.
+// Neccessary conditions for deadlock:
+    : Mutual exclusion
+    : No preemption
+    : Hold & Wait
+    : Circular wait
