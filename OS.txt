@@ -224,3 +224,106 @@
     : No preemption
     : Hold & Wait
     : Circular wait
+
+// Recource allocation graph:
+    : we draw an edge from a recource to a process if the recource has been taken by that process.
+    : we draw an edge from a process to a recource if the process has demand for that recource.
+    : If there is a single instance of all recources then cyclic wait denotes deadlock and acyclic wait denotes no deadlock.
+    : If there is multiple instances of recources then we have to use an algorithm(Banker's) to check deadlock.
+    : the algorithm(Banker's) is: 
+        : draw a table that contains how many recources allocated to a process and how many they need.
+        : then maintain a state that contain how may free recources are present if any process can execute by taking some available
+        recource from that state then give the recource to that process and take all the recource which was held by that process.
+        : try to execute all the processes by similar fashion 
+        : if all the processes get execute then there is no deadlock o/w deadlock.
+
+// Various methods for handling deadlocks:
+    : Deadlock Ingnorance(Ostrich method): we cannot affect performance of the system due to handle rare deadlocks.
+    : Deadlock prevention: Try to discard one of the Neccessary condition for deadlock.
+    : Deadlock Avoidance (Banker's algorithm)
+    : Deadlock detection & recovery 
+    
+// Deadlock Avoidance algorithm(Banker's algorithm):
+    : draw a table that contains how many recources allocated to a process and how many they need.
+    : then maintain a state that contain how may free recources are present if any process can execute by taking some available
+    recource from that state then give the recource to that process and take all the recource which was held by that process.
+    : try to execute all the processes by similar fashion 
+    : if all the processes get execute then there is no deadlock o/w deadlock.
+
+// Memory management system: Efficient utilization of memory.
+
+// Degree of Multiprogramming: Try to keep more and more program on RAM such that the efficiency of the system can increase.
+
+// Memory management technique:
+    Contiguous:
+        : Fixed partitioning
+        : Varibale partioning
+    Non Contiguous:
+        : Paging
+        : Multilevel Paging
+        : Inverted Paging
+        : Segmentation
+        : Segmented paging
+
+// Disadvantage of fixed programming:   
+    : Internal fragmentation (If we cannot use some space(the left space after aquiring space by a process in a fixed block), then it called )
+    : Limit in process size
+    : Limitation in degree of Multiprogramming
+    : External fragmentation (If the some of some small space is greater than a process still we cannot accommodate that process due to
+                            Contiguous memory allocation then this situation is called External fragmentation).
+
+// Advantages of dynamic/variable partitioning:
+    : No Internal fragmentation
+    : No Limitation on degree of Multiprogramming.
+    : No Limitation on process size.
+// Disadvantage:
+    : External fragmentation still present(but we can use undesirable method called compaction).
+    : Allocation and dellocation is little complex.
+
+// Memory allocation in variable partitioning:
+    : First Fit: Allocate the process where space is enough for the process starting from top.(Simple and fast)
+    : Next Fit: Same as first fit but starts the allocation from last alllocated hole.
+    : Best Fit: Allocate the smallest hole that is big enough.(Internal fragmentation less but slow)
+    : Worst Fit: Allocate the largest hole.(slow)
+
+// Paging: (no External fragmentation)
+    : page: The processes are divided in small fixed size pieces(page), called paging.
+    : Frame: We are divide the main memory into small fixed pieces called frames.
+    // size of a frame = size of a page
+
+// Page table: Memory management unit provides the page table which maps pages to frames .
+            // every process has its own page table
+
+// we have to find the actual address(physical address(frames+offset)) of a process in main memory from address produced by cpu for a process(logical address(page+offset)).
+
+// size of a logical address = log2(logical address space)
+// size of a physical address = log2(physical address space)
+// logical address = (page number) + page offset(size = log2(page size))
+// physical address = (frame number) + page offset
+// number of pages = pow(2,page number size)
+// number of frame = pow(2,frame number size)
+// number of entry in a page table = number of pages.
+// Size of page table = no of pages * log2(no of frames) = no of pages * frame number size // page table map page no to frame no
+
+// Page table entry can consists:
+    :Frame number bit
+    :Valid/present bit
+    :protection bit
+    :reference bit
+    :caching bit
+    :dirty/modified bit
+
+// Multilevel paging:If the size of page table bigger than size of a frame in main memory then we have to devide 
+                     our page table into pages, this method is called Multilevel paging.
+
+// Inverted paging:There is one page table for all the processes which consists frame no as index and page no + process id as page table entry
+                : searching slow
+
+// Thrashing: The cpu utilization increases with increasing degree of Multiprogramming but drops suddenly after a fixed value of degree of Multiprogramming
+                and this drop in cpu utilization is called Thrashing.
+            : prevent: by increase in RAM size
+                     : by slowing long term schedular
+
+// Segmentation: Unlike paging we devide a process into segments according to user point of view such that each segment has a specific meaning of related data(block of process)
+                : We uses segment table for mapping the VA to PA that consists segment no as index and Base address + size (limit) as segment table entry.
+                : VA = segment no + segment offset(offset<= limit) o/w error(trap/Segmentation fault)
