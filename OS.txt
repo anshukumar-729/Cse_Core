@@ -327,3 +327,107 @@
 // Segmentation: Unlike paging we devide a process into segments according to user point of view such that each segment has a specific meaning of related data(block of process)
                 : We uses segment table for mapping the VA to PA that consists segment no as index and Base address + size (limit) as segment table entry.
                 : VA = segment no + segment offset(offset<= limit) o/w error(trap/Segmentation fault)
+
+// Overlay: Overlay is a method in which we run a big process by taking small pieces of process in RAM one by one.
+
+// Virtual Memory: We never try to put all the process on main memory nor we try to put all the pages of same process in main memory at same time.
+    Virtual memory ensure that we can run a process which has larger size than the main memory
+    and also Multiprogramming by paging.
+    // We divide all processes in multiple pages and by swap in / swap out policies by various algorithm we try to reduce page fault.
+
+// Page fault:
+    If page fault occurs then cpu generates a trap on address of page fault and os takes controls from user(user lavel to os level) then after authentication os take the page from
+    Virtual memory to physical memory and update the page table. Then user takes controls(os level to user level).
+
+// if p is the probability that page fault occurs then Effective memory access time(EMAT)=p(page fault service time)+(1-p)(main memory access time)
+
+// Translation LookAside Buffer(TLB): TLB is a cache memory which is much faster than main memory in which we put some page table entry acc to various algorithms
+                                    : We try to find page table entry in TLB first if found called 'hit' o/w 'miss'.
+                                    : If main memory access time x then EMAT = hit(TLB time + x ) + Miss(TLB time + 2x)
+
+// Page replacements algorithm:
+    : FIFO 
+    : Optimal page replacements(replace the page which is not used in largest amount of time in future)
+    : Least recently used(replace least recently used page in past)
+    : most recently used(replace most recently used page in past)
+
+// Belady's anomaly: genarally in increasing in main memory the no of page fault reduces but in case of some special reference string in fifo policy the page fault increases, called Belady anomaly.
+
+// Hard Disk Architecture: 
+    : Many platters are connected with spindle which rotate all the platters in uni direction
+    : Each platters have upper and lower surface and a read write head on both surfaces
+    : All read-write head of platters are connected with a Actuater arm which moves back and forth read-write head
+    : platters surface has tracks and each track has sectors and sector has data
+
+// seek time: Time taken by r/w head to reach desired track
+// rotation time: Time taken for one full rotation by spindle.
+// rotational latency: Time taken to reach to desired Section(half rotation time).
+// transfer time: data to be transfer/ transfer rate
+// transfer rate: no of surface * capacity of one track(size) * no of rotation in one second.
+// disk access time: seek time + rotational time + transfer time + others.
+
+// disk Scheduling algorithms: we try to reduce seek time
+    : First come first serve(FCFS):(no starvation but low performance)
+    : Sortest seek time first(SSTF):move to that track which nearest to current track. (starvation problem + additional overhead for finding nearest track)
+    : SCAN algorithm: scan the whole tracks by moving one given direction from current position to end of the platters track and then in reverse direction from there.
+    : LOOK algorithm: same as SCAN but the head got untill the last Neccessary track
+    : Circular(C)-SCAN: same as SCAN but after the last position of the platters we simply move the head to opposite last position (without satisfying any request) and then traverse 
+                        again traverse from there in same direction as before.
+    : Circular(C)-LOOK: same as C-SCAN but the extreme tracks are last tracks which are in then request queue
+
+// File System: file system helps us to store and fetch data from sector my dividing actual file in a small blocks.
+                : Operation which provides file system on file:
+                        Creating, Reading, Writing, Deleting, Truncating(remove only file data not attributes/metadata), Re-positioning
+                : File attributes:
+                        Name, Extension(type), Identifier, Location, Size, Modified/Created date, Protection/Permission, Encrytion/Compression.
+
+// File allocation methods:
+    File system breaks the file into small block and assign sector for ecch block by various allocation methods:
+    : Contiguous allocation
+    : Non Contiguous allocation:    
+                                : Linked list allocation
+                                : Indexed allocation
+    : Aim:
+        : Efficient disk utilization
+        : Access faster
+
+// Contiguous file allocation:
+    : Advantages:
+        : Easy to implement
+        : Excellent read performance
+    : Disadvantage:
+        : Disk will become fragmented
+        : Difficult to grow file
+
+// Linked list file allocation:
+    : Advantages:
+        : No External fragmentation
+        : File size can increase
+    : Disadvantage:
+        : Larger seek time
+        : Difficult to random access
+        : Overhead of pointers
+
+// Indexed file allocation: each file has a index block pointed by directory and index block has index of each block of file.
+    : Advantages:
+        : Support direct access
+        : No External fragmentation
+    : Disadvantage:
+        : Pointers overhead
+        : Multilevel index
+
+// Unix Inode structure:
+    In Inode each block contain:
+        attributes, direct block(contain pointers to data), single indirect(points to block of pointers), double indirect, triple indirect.
+
+// Protection and Security:
+    // Security voilation categories:
+        : Breach of confidentiality: Unauthorized reading of data. (Encrytion technique can use)
+        : Breach of intigrity: Unauthorized modification of data.
+        : Breach of availability: Unauthorized destruction of data.
+        : Theft of service: Unauthorized use of recources.
+        : Denial of service(DOS): prevention of legitimate user.
+    // Access matrix : It denotes which user have what Permission on data
+
+
+
