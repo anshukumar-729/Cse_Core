@@ -1,0 +1,118 @@
+// Properties of OOP:
+// Encapsulation: The process of binding data members(variables, properties and member function(method)) into a
+                    single unit.
+
+// Abstraction: It refers to represent Neccessary feature without including more details or explaination.
+                It relies on the separation of interface and implementation
+
+// Inheritance: The mechanism of deriving a new class from a old class.
+
+// Polymorphism: It means ability to take more than one form.
+
+// Class: A class is a user defined data type that we can use in our program and it works as an object constructor, or 
+          a blueprint for creating objects.
+
+// methods: function that belongs to the class and define the behaviour/action taken by objects.
+
+// Access specifiers: Define how the members of a class can be accessed.
+    : public: accessible from outside the class
+    : private: not accessible from outside the class
+    : protected: not accessible from outside class but accessible from inherited classes.
+    // default is private
+
+class_name obj1=obj2 same as 
+    class_name obj1{obj2}
+
+// Static member: A static member is like a global member for all the objects of the class or there is only
+                    one copy of static member for each object
+                // default value = 0
+
+// We can define members of the class outside the class using scope resolution operator(::)
+    eg)return_type class_name::member_name(){
+                            }
+        or datatype class_name::static_var_name=value
+// A static member function can only access static data members, other static member functions and any other function outside the class.
+
+// Friend class: A friend class can access private and protected members of other class in which it is declared as a friend.
+
+// One flaw of c++ is private member can be access outside the class using friend class/function.
+
+// Friend Function: same access as friend class and it can be any member function of a class or any outside function
+
+// Constant member function:
+    An object declared as const cannot be modified and hence it can invoke only Constant member function
+    as these function ensure not to modified the object.
+    : A const object can only initialize at the time of declaration // by constructor
+    : A const method is not allowed to modified the object on which they are called.
+
+// Pointer of class type:
+    class_name obj;
+    class_name *ptr; // ptr is a pointer which can be used to point to class objects.
+    ptr=&obj;
+    cout<<obj.attribute;
+    cout<<(*ptr).attribute; // or ptr->attribute // short hand notation
+
+// Pointer to class member:
+    // data member
+    eg)
+        class class_name{
+            public:
+            int a;
+        };
+        class_name obj,*ptr;
+        ptr=&obj; // pointer to object
+        int class_name::*ptr2=&class_name::a; // Pointer to data member a(only) // ptr2 become a special object of class itself
+    // member function
+    eg)
+        class class_name{
+            public:
+            int func(int a){
+                return 1;
+            }
+        };
+        int (class_name::*ptr)(int)=&class_name::func;
+
+// constructors: It is a special method of the class that is automatically called when an object of that class is created.
+                // always public and not return anything same name as class_name
+            Three types:
+                : default constructor (when no parameter are passed) // when we don't define constructor compiler automatically generates default constructor.
+                : paramaterized constructor
+                : copy constructor(when parameter are of type class itself) // used to copy an object to an another // compiler creates default copy constructor as well.
+                    class_name ob1(obj2) same as class_name obj1=obj2 
+
+// destructors: Destructor is a member function which destruct or deletes an object
+                // no return type, same name as class name preceding with ~(tilda), no parameter
+                // there is only destructor of a class
+                // destructors for non static member objects are called in reverse order in which they appear in the class declaration
+                // for static member destructor are called when programs ends.
+
+// when an object is created first memory allocated to all data members then constructor will be called but for static member memory allocated when it will be used for first time.
+
+// Inheritance:
+    syntax) class derived_class_name:visibility_mode base_class_name{};
+    // only public and protected members can be inherited to child class of base class
+    // if members are public in base class:
+            :if visibility_mode is public then members remains public in child class
+            :if visibility_mode is protected then members remains protected in child class
+            :if visibility_mode is private then members remains private in child class
+    // if members are protected in base class:
+            :if visibility_mode is public then members remains protected in child class
+            :if visibility_mode is protected then members remains protected in child class
+            :if visibility_mode is private then members remains private in child class
+    // security : private > protected > public
+    ** maximum of access specifiers of base class and visibility_mode will always become access specifiers for child class
+
+// Types of Inheritance:
+    : Single Inheritance: Derived class is inherited from one base class.
+    : Multilevel Inheritance: Deriving class from another derived class.
+    : Multiple Inheritance: Derived class inherited from more than one class.
+                        syntax) class D:visibility_mode base1, visibility_mode base2,..{};
+        // ambiguity: different base/derived classes can have same named member, so which class member we are using we have to tell the compiler
+                        by resolving scope like class_name::member_name
+    : Hybrid Inheritance: Multilevel + multiple
+    : Hiraricle Inheritance: Like a tree
+
+// when we define an object of derived class the default/derived (must be defined) constructor of immidiate base class are called in same order in which they are inherited then for derived class
+    reverse in case of destructor
+// we called the constructor for only immidiate base and child class while creating an object of child class 
+    syntax) Base(data_type d1,..):immidiate Parent(d1,d2,..){}
