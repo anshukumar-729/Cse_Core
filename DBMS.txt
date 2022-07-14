@@ -1,3 +1,5 @@
+** source: Youtube video by Gate Smasher **
+
 // E F Codd - father of DBMS
 // Database System:
     a)Database - collection of releated data (structured(Realational model), unstructured)

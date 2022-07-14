@@ -1,3 +1,6 @@
+******* Object Oriented programming in c++ *****
+** source: Youtube video by Jay Bansal **
+
 // Properties of OOP:
 // Encapsulation: The process of binding data members(variables, properties and member function(method)) into a
                     single unit.
@@ -51,6 +54,7 @@ class_name obj1=obj2 same as
     ptr=&obj;
     cout<<obj.attribute;
     cout<<(*ptr).attribute; // or ptr->attribute // short hand notation
+    // we can call the members by a null pointer of same class type
 
 // Pointer to class member:
     // data member
@@ -85,6 +89,7 @@ class_name obj1=obj2 same as
                 // there is only destructor of a class
                 // destructors for non static member objects are called in reverse order in which they appear in the class declaration
                 // for static member destructor are called when programs ends.
+                // destructor cannot be implement outside the class.
 
 // when an object is created first memory allocated to all data members then constructor will be called but for static member memory allocated when it will be used for first time.
 
@@ -116,3 +121,85 @@ class_name obj1=obj2 same as
     reverse in case of destructor
 // we called the constructor for only immidiate base and child class while creating an object of child class 
     syntax) Base(data_type d1,..):immidiate Parent(d1,d2,..){}
+
+// Data hiding: The process of binding data into a capsule is called encapsulation and through encapsulation we achieve data hiding
+                It is a concept in oop that confirms the security of members of a class from Unauthorized access.
+
+// Types of abstraction: It refers to represent Neccessary feature without including more details or explaination.
+    : Procedural abstraction: It includes series of instruction having the specified function.
+    : data abstraction: It is set of data that specifies and describe a data object.
+
+// Polymorphism: We can define as Polymorphism as the ability of a message to be displayed in more than one form.
+    // In c++ divided into two parts:
+        :compile time Polymorphism
+        :runtime/dynamic Polymorphism
+    // compile time Polymorphism:
+        It acheived by function overloading(same name of function but different in parameters) or operator overloading.
+        rules for function overloading:
+        // function overloading:
+            : function that differs only in return type are equivalant
+            : function that differs only in one parameter which is one of the function type ans other is pointer to same function type are equivalant.
+            : function that differs only in one parameter which is one const and other is volatile are equivalant
+        // operator overloading:
+            we can change the way operators work for user-defined data types like objects and structures, this is known as operator overloading.
+            syntax) return_type operator symbol(arguments){}
+            // post_increament operator) void operator ++ (int){  pre_increament) void operator ++ (){
+                                            val++;                                  ++val;
+                                    }                                         }
+            // binary operators)
+                return_type operator symbol (const data_type var){}  // call as c3=c1+c2 // c2 is passed as argument for overloaded symbol operator for c1 // same as c1=c1.operator symbol(c2)
+
+            // * and & are already overloaded by default.
+            // ::, ., .*, ?: and sizeof() cannot be overloaded.
+            // when && and || are overloaded then it loses short circuiting properties.
+            // overloading function call operator():
+                return_type operator()(data_type var) const{    // we can use this for object work like a function.
+
+                }
+    // runtime Polymorphism:
+        It acheived by function/method overriding
+        // method overriding: When we call a method from derived class which is declared in base class as well then the method of derived class get executes, this is called method overriding.
+                            method of derived class override the method of base class
+                            // we can keep address of derived class objects in base class pointers but through that method overriding will supressed and method of base class will be call only.
+                            B* ptr = new D; or
+                            B b = D;
+        // virtual function: A virtual function is a member function in base class that we excpect to redefine in derived class. This is especially applies in above case.
+                            // means when we keep address of derived class objects in base class pointers method of derived class will be call.
+                            eg) class B{
+                                public:
+                                   virtual void func(){
+                                       cout<<"base";
+                                   }
+                                }
+                                class D:public B{
+                                    public:
+                                        void func() derived{ // when we add derived identifier then base class must contain same method
+                                            cout<<"derived";
+                                        }
+                                }
+        ** we can make object by new keyword like A* ptr=new A;  // new makes the object of type A and return address of it.
+        ** a virtual function cannot be static.
+        // virtual base class:virtual base class are used in virtual Inheritance in a way of preventing multiple "instances" of a given class appearing in an Inheritance hierarchy when using multiple Inheritance.
+            syntax) class derived:virtual public base{}
+        
+        // pure virtual function:
+            it is used if a function doesnot have any use in base class but the function must be implemented by all its derived classes.
+        // Abstract class: If a class contains atleast one pure virtual function is called Abstract class. 
+                            : We cannot make object of Abstract classes but can create pointer of Abstract class.
+            syntax) class B{
+                    public:
+                        virtual void func()=0;
+                    }
+                    class D{
+                        public:
+                            void func() override{
+
+                            }
+                    };
+        // internaly compiler made vtable and vptr for handling virtual function call.
+        // virtual destructor: In the case of destructor same rule is applied as for virtual function.
+        // Templates: syntax) template <class T>
+
+
+
+

@@ -1,3 +1,5 @@
+** source: Youtube video by Gate Smasher **
+
 // Operating System and its function:
     Operating system provides an interface b/w hardware and users/software
    // Functionalities:

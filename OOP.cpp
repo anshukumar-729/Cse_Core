@@ -81,21 +81,59 @@ class c1{
    public:
    int b;
    friend class c1_friend; // can be written in private part
-   friend void c1_friend::init(c1 obj); // friend function
+   // friend void c1_friend::in(c1 obj); // friend function
+   friend void func(c1 obj);
 };
-class c1_friend{
+void func(c1 obj){
+   cout<<obj.a<<"\n";
+}
+class c1_friend
+{
+public:
+   void in(c1 obj1)
+   {
+      obj1.a = 5; // accessing private members using friend class or function
+   }
+};
+
+vector<int> operator +(vector<int> a,vector<int>b){ // operator overloading
+   for(auto i:b){
+      a.push_back(i);
+   }
+   return a;
+}
+
+class complex_num
+{ 
+   int r,i;
    public:
-      void init(c1 obj1){
-         obj1.a=5; // accessing private members using friend class or function
+      complex_num(int r=0,int i=0){
+         this->i=i;
+         this->r=r;
+      }
+      void print(){
+         cout<<r<<" "<<i<<"i\n";
+      }
+      complex_num operator +(const complex_num &obj)
+      { // operator overloading
+         complex_num temp;
+         temp.r=r+obj.r;
+         temp.i=i+obj.i;
+         return temp;
       }
 };
 
 int main()
 {
 
-   Employeee e1 = Employeee("anshu");
+   // Employeee e1 = Employeee("anshu");
 
-   Teacher t1 = Teacher("anshu", "study");
+   // Teacher t1 = Teacher("anshu", "study");
+   complex_num a(2,3);
+   complex_num b(4,5);
+   complex_num ans=a+b;
+   ans.print();
+
 
    return 0;
 }
