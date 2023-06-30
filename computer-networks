@@ -1,0 +1,337 @@
+** Source - Gate Smashers youtube
+
+// Computer Network : It is a collection of various computing devices. The main of it to share the data.
+
+// Functionality: 
+            Mendatory:  Error Control
+                        Flow Control
+                        Multiplexing, Demultiplexing
+            Optional:   Encryption, Decryption
+                        Checkpoint
+
+// OSI Model: 7 layers:
+            Application
+            Presentation
+            Session
+            Transport
+            Network
+            Data Link
+            Physical
+
+// TCP/IP Model: 4/5 layers
+            Application
+            Transport
+            Internet
+            Network Access (Data Link + Physical)
+
+// Types of Computer Network:
+            PAN (Persional)
+            LAN (Local)
+            CAN (Campus)
+            MAN (Metropolian)
+            WAN (Wide)
+
+// Physical layer:
+    // Topology:  
+        Mesh - Nodes connected with all nodes (Reliability Highest, High Cost,High Security, Support point to point communication)
+        Hub - Nodes are connected with a hub(miltiport device) (Less Reliability, Lower Cost, Low Security, Support point to point communication)
+        Bus - Nodes connected with Back Bone Cable with drop lines(cable) (Less Reliability, Less Security, Low Cost, Multipoint (Collision))
+        Ring - If we connect two ends of bus topology (Less Reliability, Less Security, Low Cost, Multipoint(Collision))
+
+    // Encodings:
+        Manchester
+        Differential Manchester
+    
+    // Devices:
+        Hardware:
+            Cables (Unshielded twisted pair cable, Coaxial cable, Fibre Optic)
+            Repeaters (Regenerate the strength, Forwarding, No filtering, Two port, No buffer)
+            Hubs (Multiport repeater, Forwarding, No filtering, No buffer)
+        
+        Hardware + Software:
+          physical + datalink
+            Bridges (Used to connect two different LANs, Forwarding, Filtering, Buffer) - static and dynamic(table updation) - Uses Data unit protocol to prevent loops
+            Swithces (Multiport Bridge, Full duplex links, zero Collision, traffic is minimal)
+          physical + datalink + Network
+            Routers (Forwarding, filtering using routing table, flooding exist, store and forward, zero Collision )
+
+        Security:
+            IDS
+            Fiewall
+        
+        Others:
+            Gateway
+            Modem
+
+    // Circuit Switching:
+        Physical layer
+        Contigious Flow(In Order)
+        No headers
+        Efficiency Less
+        Delays less
+    
+    // Message Switching:
+        same as packet Switching but contain whole message rather than its pieces(packets)
+    
+    // Packet Switching:
+        Data link and Network layer
+        Store and forward
+        Pipelining Used
+        Efficiency
+        Delays
+        // Datagram Switching - connection less,  no reseravtion, out of order, packet lost High
+        // Virtual Circuit - connection oriented, reseravtion, In Order, packet lost low
+
+    // Unicasting: One to One
+    // Broadcast: One to all (limited, direct, multicast)
+
+// Data Link Layer: Hope to Hope delivery, Node to Node, Router to Router 
+                    Flow control
+                    Error Control
+                    Access Control
+                    uses Physical Address(MAC Address)
+                    send data in frames
+    // ARQ (Automatic repeat request) protocols:
+        // Stop and wait: window size 1
+        // Go back N: Window size (sender: 2^m - 1, reciever: 1), In Order, Cummulative acknowledgment
+        // Selective repeat: window size (both: 2^m - 1), Out of Order acceptable, Cummulative acknowledgment
+
+    // Framing: The data link layer needs to back bits into frames
+        // bit and byte stuffing: used to treat data as data not as flag if its looking like flag or header
+    
+    // Error detection and correction: 
+        Error : Single bit and burst Error
+        Detection: Single Parity, 2D Parity Check, Check Sum, CRC (Cyclic Redundancy check)
+        correction: Hamming Codes
+    
+    // Single parity detection: can detect odd no of bits change
+    // CRC: can detect burst error of length equal to polynomial degree + odd no of bits (binary division, appending the remainder)
+
+    // hamming distance: no of set bit after performing xor between two valid codewords (d).
+                        // we can detect d-1 bit error
+
+    // hamming code for error detection and correction: we use 2^kth bits as redundant(parity) bits (k=0,1,2,..):
+                1st parity bit = xor (1,3,5,..)
+                2nd parity bit = xor (2,3,6,7,..)
+                4th parity bit = xor (4,5,6,7,..)
+            
+    // MAC (Multiple/Medium access protocol):
+            // Types:
+                // random access protocol: Aloha, CSMA, CSMA/CD, CSMA/CA (CD/CA = Collision detection/avoidance)
+                // Control access protocol: Pooling, Token passing
+                // Channelization protocol: FDMA(freq division), TDMA(time division)
+
+            TT(transmission time) = message/bandwidth
+            vulnerable time = 2*TT
+            
+            // Pure Aloha vs slotted Aloha:
+                Any time transmission and time(time = transmission time) distribution bw nodes(transmits on only beginning of the slots)
+                double Efficiency in slotted Aloha
+            
+            // CSMA: Carrier sensor Multiple access: Check whether channel is busy or not
+                // types:
+                    1-persistant: continous check and then transmits
+                    0-persistant: check after random amount of time and then transmits
+                    p-persistant: check after a fixed time slot and then transmits with probability(p)
+                
+            ** propagation delay (time): time to travel data from one point to other point = d / propagation speed
+            ** transmission delay (time): time to travel all bits of data from a single point = data size / bandwidth
+
+            // CSMA/CD: Collision detection: only can detect if it is transmitting the data while recieving the collision message (no acknowledgment system)
+                                            TT>=2*PT (data should be greater equal in size of 46B in eathernet frame format)
+                        * use in wired media
+            // CSMA/CA: We try tom wait untill we found clearence from router after idleness found in channel
+                        * use in wireless media
+                
+            // Token Ring: Ring topology used
+                           uses token passing for acces control (unidirectional)
+                           piggybacking acknowledgment
+                           one monitor station is present 
+        
+// Network Layer:(Host to Host , Source to destination) 
+                Uses logical Address (IP Address = Network + Host)
+                Routing (RIP , OSPF)
+                Fragmentation
+                Congesion control
+    
+    // Classful addressing:
+        // Class A: 32 bit -> first bit always 0 (0 - 127)
+                    2^31 IP Adresses 
+                    1st 8 bits represents Network ID and next 24 bits represents HOST ID within a network
+                    No of network = 2^7 - 2 (00000000, 01111111)->not used
+                    No of Host within a network = 2^24 - 2 (NI.0.0.0 represents the network itself ans NI.256.256.256 represents Broadcast address)
+                    Default mask = 255.0.0.0 (Default mask and ip address will give network address)
+            
+        // class B: 32 bit -> first 2 bits are 10 (128 - 191)
+                    2^30 IP Adresses 
+                    1st 16 bits represents Network ID and next 16 bits represents HOST ID within a network
+                    No of network = 2^14 
+                    No of Host within a network = 2^16 - 2 (NI.NI.0.0 represents the network itself ans NI.NI.256.256 represents Broadcast address)
+                    Default mask = 255.255.0.0 (Default mask and ip address will give network address)
+                
+        // class C: 32 bit -> first 3 bits are 110 (192 - 223)
+                    2^29 IP Adresses 
+                    1st 24 bits represents Network ID and next 8 bits represents HOST ID within a network
+                    No of network = 2^21 
+                    No of Host within a network = 2^8 - 2 (NI.NI.NI.0 represents the network itself ans NI.NI.NI.256 represents Broadcast address)
+                    Default mask = 255.255.255.0 (Default mask and ip address will give network address)
+                
+        // class D: 32 bit -> first 4 bits are 1110 (224 - 239)
+                    2^28 IP Adresses 
+                    All 28 bits are reserved for multicasting/ Group Email  
+                
+        // class E: 32 bit -> first 4 bits are 1111 (240 - 255)
+                    2^28 IP Adresses 
+                    All 28 bits are reserved for Milatary purpose
+
+        ** NI followed by 255 is for Direct Broadcasting which use to Broadcast outside the network while 255.255.255.255 is used for limited Broadcasting within same network
+
+        // problems: Wastage of IP Address and not flexible (class C provides 2^8 host, B provides 2^16, A provides 2^24)
+                     Maintenance is time consuming
+                     More chances to errors
+
+    // Classless addressing: No class only blocks 32 bits = Block ID + Host ID represents x.y.z.w / n. n represents block size
+                            eg: IP = 200.10.20.40/28 . write network/block id or first address of the network
+                                Mask = 255.255.255.240 (28 bits 1)
+                                network id = Mask & IP = 200.10.20.32
+    
+    // Subnetting: Dividing one big network into multiple networks.
+                    eg: IP = 200.10.20.0 divide this network into two subnets
+                            class C -> last octate is for hosts ->divide the hosts -> fix the msb -> 0 and 1
+                            first subnet = 200.10.20.0 to 200.10.20.127 (same first is network address and last is Broadcast Adresses)
+                            second subnet = 200.10.20.128 to 200.10.20.255 (same first is network address and last is Broadcast Adresses)
+                            subnet mask = 255.255.255.128 for both
+    
+    // Variable length subnet Masking:
+                    same as Subnetting, we can further divide subnets according to our need
+    
+    // Subnetting in Classless: we only update our "/ n" thing after dividing the host in class addressing
+
+    Datagram: header size(20B to 60B) + payload(0B to 65515B)
+    // IPV4 header Format: Connectionless, Datagram Service (packet can go anywhere from any point)
+                        
+                        VER: version -> 4bits
+                        HLEN: header length -> 4bits -> actual size = 4*HLEN
+                        Type of Service (DSCP Differenciated Services Code point) -> PPPDTRCO ->8bits 
+                        Total length -> 16 bits
+                        // Fragmentation -> identification(16) + flag(3) + fragment offset(13)
+                        TTL -> 8bits
+                        protocol -> 8bits
+                        header checksum -> 16bits
+                        Source IP -> 32bits
+                        Dest IP -> 32bits
+
+                        // Fragmentation:
+                            identification bits -> denotes bellonging packets -> 16bits
+                            flad -> res(always 0) + DF(Do not fragment -> 1 if Fragmentation allowed) + MF (more fragment -> 1 if more data is remaining)
+                            fragment offset -> 13 bits (total data ahead of this fragment of the packet / 8)
+    
+    // header(20-60) + options and padding(0-40) = 60 B
+
+    options and padding: Record Route -> can store IP of the router (max 9Ip in 40B)
+                        Source Routing -> Strict(full path) , Loose (some point)
+                        padding : It is for making header length multiple of 4 (HLEN * 4)
+
+    // IPV6 header: 128 bits IP Address
+                    Base header -> 40B fixed
+
+                    version -> 4 bits
+                    priority/ traffic type -> 8 bits 
+                    flow label -> used for reservation like virtual Circuit -> 20bits
+                    payload length -> 16bits
+                    Next/Extension header -> can use multiple headers after base header like(Routing header , Hop by hop options, Authentication header,
+                                            fragment header, destination options, Security header)-> 8bits
+                    Hop limit -> 8bits
+                    Source address -> 128bits
+                    destination address ->128bits
+
+    // Routings protocol(unicasting (one to one)): Intradomain:
+                                    distance vector (RIP)
+                                    Link state (OSPF)
+                        Interdomain: 
+                                    path vector(BGP)
+
+                // Distance vector routing: we share the distance vector among neighbour(multiple times). all nodes update their distance to all nodes by taking neighbour as Medium 
+
+                // count to infinity problem in DVR: when a node sends the distance to neighbour which he recieves from itself previously when it is connected to the internet but not now.
+                                                    then both node starts sending each other a false distance which goes to infinity 
+
+                // Link state routing: All nodes flood their link state to all others nodes. All nodes have global knowledge and then all node find minimum distance using dijkshtra.
+
+    // ARP (Address resolution protocol): Used to find MAC address of a host/router. Sending Broadcast and reply unicast.
+                                        contain source IP, source MAC, Dest IP, FFFFFF(Broadcast MAC)
+    
+    // NAT (Network address translation): Used to translate private IP to public IP or public IP to private IP
+                                            We create a private IP address within an organization and one public IP for all, NAT stores and converts IPs to communicate to real world
+                
+                    
+// Transport Layer: Port to port delivery , End to End delivery
+                    Reliability (Inorder)
+                    Error control(checksum)
+                    Congestion control
+                    Flow control
+                    Segmentation (wrapping the bits in Transport layer)
+                    Multiplexing / Demultiplexing
+
+    // Socket address: IP address(32 bits) + port number(16 bits) = 48bits
+
+    // TCP (Transfer control protocol):  Creates segment (3 way handshaking -> Syn -> Syn + Ack -> Ack)
+                    Byte streaming
+                    Connection oriented
+                    Full duplex
+                    piggybacking
+                    Error Control
+                    Flow control
+                    Congestion control
+
+                    header: 
+                        Source port -> 16 bits (port no (0 to 2^16 but 0 to 1023->well known (reserved)))
+                        Dest port -> 16 bits
+                        Sequence number -> 32 bits
+                        acknowledgment number -> 32 bits (next expected byte number)
+                        HLEN -> 4bits
+                        flags -> (urgent, acknowledgment, push, reset, sync, finish)
+                        window size -> 16bits
+                        checksum -> 16bits 
+                        urgent pointer -> 16bits 
+                        options and padding (can send MSS (maximum segment size))
+
+                    
+            // AIMD(additive inverse mulpticative decrease) graph: start with MSS -> then slow start/exponential growth (multiply 2) upto threshold (max window/MSS) -> linear growth (Congestion avoidance) (add MSS) upto max window size
+
+            * in case of Timeout occur (severe) -> start from MSS 
+            * in case of 3 ACK recieved (light) -> start with threshold
+        
+    // UDP (User Datagram protocol):
+                    Connectionless
+                    Unreliable -> No order
+
+                    header: size (8 Bytes)
+                    source port -> 16 bits
+                    Dest port -> 16 bits 
+                    length -> 16 bits -> max size (2^16) -> header(8 byte) + payload(2^16 bits - 8 Bytes)
+                    checksum -> 16 bits
+        
+        // UDP Application: stateless
+            Query response protocol (one request one reply ) [DNS]
+            Speed (online games , voice over IP)
+            Broadcasting/ multicast [RIP]
+            continous streaming
+
+// Session layer: it is not responsibility of OS rather of Application
+                Authentication
+                Authorization
+                Session restoration (checkpoints using session beans)
+                Flow control and syncronization
+
+// Presentation layer :
+                Code conversion (Formatting)
+                Encryption and Decryption
+                Compression 
+            
+// Application layer:
+
+        // DNS (Domain name system): maps Domain to its IP address
+            
+            
+        
