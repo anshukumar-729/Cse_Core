@@ -331,7 +331,119 @@
             
 // Application layer:
 
-        // DNS (Domain name system): maps Domain to its IP address
+        // DNS (Domain name system): maps Domain to its IP address. Uses UDP 
+                                    local ISP can store some IP as cache
+
+        // HTTP (Hyper text Transfer protocol): 
+                                    port no -> 80
+                                    not reliable but can use TCP to achieve Reliability.
+                                    inband protocol -> command and data travel through same port
+                                    stateless -> (not store information)
+                                    HTTP 1.0 (non persistant) -> (involves establishing a new connection for each request-response cycle. In this approach, after the server sends
+                                                                 a response to the client, the connection is closed.)
+                                    HTTP 1.1 (persistant) -> ( aims to reduce the overhead and latency introduced by the non-persistent approach. It involves keeping the connection between 
+                                                                the client and server open after the initial request-response cycle, allowing multiple requests and responses to be exchanged over the same connection)
+                
+                ** HTTPS (secure) -> check Authentication at each request
             
-            
+        // FTP (File trasfer protocol):
+                                    port no -> 20 (data) and 21 (command)
+                                    synchronous -> both person should live
+                                    Not inband
+                                    Data connection is not persistant
+                                    control connection is persistant
+                                    Reliable
+                                    Stateful
         
+        SMTP (simple mail transfer protocol):
+                                    SMTP and POP(post office protocol) can be asynchronous
+                                    port no 25
+                                    POP3 has port 110 which is not encrypted and 995 which is secure 
+                                    uses MIME (Multipurpose internet mail extensions)
+        
+        SMTP -> Send mail (push mail) , port 25
+        POP -> Retrieve mail (pop mail), port 110(Default), 995(SSL -> secure Socket layer)
+        IMAP(internet message access protocol)-> Retrieve mail (pop mail), port 143(Default), 993(SSL -> secure Socket layer)
+        ** all can use TCP and UDP. POP deletes after retrieving the mail from server while IMAP not
+
+// Cryptography: To secure data. 
+                Can use Symmetric key system (both user has same key to encrypt and decrypt)
+                Asymmetric key system (both have public and private key) ->encrypt with public ke of reciever and decrypt with private key of reciever
+
+                // RSA algorithm :
+                    Two prime numbers -> p and q;
+                    n = p*q;    
+                    phi(n) = (p-1)*(q-1)
+                    choose e such that 1<e<phi(n) and gcd(e,phi(n))==1 -> e is public key
+                    (d*e )%phi(n)=1  -> d is private key
+                
+// Network Firewall: Used for network security (Layer 4 (upto Transport layer))
+            Monitor and control incoming and outgoing traffic based on the predefined rules
+            Acts like a barrier
+            Can be host based and network based
+
+// Proxy Firewall: (layer 5 (upto Application layer))
+                Check user data (name , id, password) for Authentication
+
+// All layer important points:
+    layer --------------- nomenclature -------------- device used ---------------protocols used --------------------------------------------delivery
+    Application :         data/message                Firewalls,Gateway          DNS,HTTP,FTP,DHCP,Telnet,SMTP,POP                          
+    Presentation:         Data/message                Firewall                   MIME,SSL
+    Session:              Data/message                Firewall                   PAP,RPC
+    Transport:            Segment                     Firewall,Gateway           TCP,UDP                                                    End to End
+    Network:              Pocket/Datagram             Router,3layer switch       IP(v4,v6),ICMP,IGMP,ARP                                    Source to destination
+    Data link:            Frame                       Bridge,2layer switch       Eathernet (IEEE 802.3) Token ring(IEEE 802.5), CSMA        Node to Node
+    Physical:             Bits                        cables,hub,repeaters       IEEE 802.11 (Wifi)
+
+    ** DHCP (dynamic host control protocol) -> used to get new IP
+       Telnet -> used to access remote server
+       MIME (miltipurpose internet mail extension) -> various items in mail (audio,video)
+       SSL (secure Socket layer) -> Cryptography
+       PAP (password Authentication protocol)
+       RPS (remote procedure call)
+       ICMP (Internet control message protocol) -> used to send error messages
+       IGMP (Internet Group message protocol) -> multicasting
+
+// Linux network commands:
+    ifconfig -> used to know IP, MAC, MTU (maximum transmission unit)
+    ip -> latest version of ifconfig
+    traceroute -> used for troubleshoot
+    trasepath -> similar to traceroute but not require root previleges
+    ping -> Gives round trip time
+    netstat -> gives network statistics
+    ss -> latest version of netstat
+    Dig -> DNS related query
+    nslookup -> older version of dig
+    route -> display and manipulate routing table
+    host -> display Domain name of given ip address
+    arp -> view and add data in arp table 
+    iwconfig -> used to view and set wifi details   
+    hostname -> view and set hostname
+    tcpdump -> display network interface traffic
+
+// Socket programming: 
+        server side -> Socket() -> Bind() -> Listen() -> Accept() -> Send() -> Recieve() -> Close()
+        client side -> Socket() -> connect() ^ -> Recieve() -> Send() -> Close()
+
+        ** Socket() system call takes three params (Domain ,type and protocol)
+            Bind() gives the Socket address to the system
+            Listen() recieves all request and put into them into queue 
+
+// IPV6 (128 bits/16 byte)
+    Not limited
+    real time data transmission
+    Authentication
+    Encryption in network layer
+    fast processing at router (fixed 40bits base headers)
+
+** IPSec protocol -> IP security -> used for security in network layer
+        Transport mode -> encapsulate segment into IPsec then in IP
+        Tunnel mode -> encapsulate segment into IP then into IPsec and again in IP to double security (used for Hope to hope)
+
+** bandwidth -> mbps
+   throughput -> actually transferred data at perticular time
+   delay -> travelling time 
+
+
+
+
