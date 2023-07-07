@@ -449,6 +449,35 @@ eg) Difference b/w nested query, corelated subquery and joins using example:
     :Sequence: Generate numeric values(automatically)
     :Index: Improve of the data retrieval queries.
     :Synonyms: Gives alternative names to the objects.
+// SQL Query:
 
+    select OrderID FROM Orders 
+    intersect 
+    select OrderID from OrderDetails;
 
+    CREATE TABLE new_table AS
+    SELECT *
+    FROM existing_table
+    WHERE 1 = 0;
+
+    SELECT name
+    FROM employee
+    WHERE name LIKE 'M%'
+
+    SELECT salary
+    FROM employee
+    ORDER BY salary DESC
+    LIMIT 1 OFFSET 2;
+
+    select * FROM Orders v1 
+    INNER join 
+    OrderDetails v2 
+    on 
+    v1.OrderID = v2.OrderID;
+
+    SELECT ROW_NUMBER() OVER (ORDER BY OrderID) AS row_num,* FROM Orders;
+
+    SELECT SUBSTRING(column_name, 1, 5) AS substring_value
+    FROM your_table;
+    
 
