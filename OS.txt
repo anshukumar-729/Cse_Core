@@ -431,5 +431,5 @@
         : Denial of service(DOS): prevention of legitimate user.
     // Access matrix : It denotes which user have what Permission on data
 
-
+// spooling: Storing processes in buffers while hardware is not free.
 
